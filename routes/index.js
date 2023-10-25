@@ -30,7 +30,7 @@ function getGoogleOAuthURL() {
   return `${rootURL}?${queryString.toString()}`;
 }
 
-
+// landing page
 router.get('/', (req, res, next) => {
   const googleURL = getGoogleOAuthURL();
   res.render('index', 
@@ -40,6 +40,7 @@ router.get('/', (req, res, next) => {
   })
 })
 
+// validated user gets directed here
 router.get('/verified', (req, res, next) => {
   res.render('home', {
     name: req.query.name,
@@ -49,7 +50,7 @@ router.get('/verified', (req, res, next) => {
   })
 })
 
-
+// google auth page
 router.get('/api/sessions/oauth/google', async (req, res, next) => {
   const code = req.query.code;
   const URL = 'https://oauth2.googleapis.com/token';
@@ -73,11 +74,6 @@ router.get('/api/sessions/oauth/google', async (req, res, next) => {
 
     const googleUser = jwt.decode(id_token);
 
-    console.log(googleUser.email);
-    console.log(googleUser.name);
-    console.log(googleUser.picture);
-    console.log(googleUser.family_name);
-
     return res.redirect(url.format({
       pathname:`${origin}/verified`,
       query: {
@@ -94,5 +90,64 @@ router.get('/api/sessions/oauth/google', async (req, res, next) => {
   }
 });
 
+// prompt user for sign in info
+router.get('/signin', (req, res, next) => {
+  res.render('signin', {})
+})
+
+// prompt user for sign up info
+router.get('/signup', (req, res, next) => {
+  res.render('signup', {})
+})
+
+// issue otp and prompt user for otp
+router.get('/otp/enterotp', (req, res, next) => {
+  res.render('otp', {})
+})
+
+// check username and password are valid before issueing otp
+router.post('/check', (req, res, next) => {
+  console.log("in check sign in");
+  console.log(req.body.email);
+  console.log(req.body.password);
+  res.redirect('/otp/enterotp')
+})
+
+// gather and take account of user entered info
+router.post('/signup/collectinfo', (req, res, next) => {
+  console.log("in collect sign up info");
+  console.log(req.body.email);
+  console.log(req.body.password);
+  console.log("create unverified user");
+  res.redirect('/otp/enterotp')
+})
+
+// check user entered otp
+router.post('/otp/checkotp', (req, res, next) => {
+  console.log('in check otp');
+  console.log(req.body.otp);
+  res.redirect('/verified')
+})
+
+// user forgot password
+router.get('/signin/forgot_password', (req, res, next) => {
+  res.render('forgot_password', {})
+})
+
+// user gets prompted for otp
+router.post('/signin/forgot_password/otp', (req, res, next) => {
+  res.render('forgot_pwd_otp', {})
+})
+
+// on successful otp password user is prompted for new password
+router.post('/signin/forgot_password/otp/enter', (req, res, next) => {
+  res.render('enter_new_password', {})
+})
+
+// users new password is updated in system and they are redirected to main landing page
+router.post('/signin/forgot_password/otp/enter/confirm', (req, res, next) => {
+  console.log(req.body.password);
+  res.redirect('/');
+})
 
 module.exports = router

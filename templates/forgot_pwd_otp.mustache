@@ -20,16 +20,11 @@
 
 <body>
   <div class="container pt-5">
-    <h1>Base Template!</h1>
-    <div>
-      <a href={{googleURL}}>Login With Google</a>
-    </div>
-    <div>
-      <a href="/signin">Login With Email</a>
-    </div>
-    <div>
-      <a href="/signup">Register</a>
-    </div>
+    <h2>Enter OTP</h2>
+    <form action="/signin/forgot_password/otp/enter" method="post">
+        <input type="password" name="otp" placeholder="one-time password" required><br>
+        <input type="submit" value="Verify OTP">
+    </form>
   </div>
 </body>
 </html>

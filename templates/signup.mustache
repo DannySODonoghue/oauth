@@ -20,16 +20,14 @@
 
 <body>
   <div class="container pt-5">
-    <h1>Base Template!</h1>
-    <div>
-      <a href={{googleURL}}>Login With Google</a>
-    </div>
-    <div>
-      <a href="/signin">Login With Email</a>
-    </div>
-    <div>
-      <a href="/signup">Register</a>
-    </div>
+    <h2>Register</h2>
+    <img src="/images/qrcode.svg"/>
+    <form id="myform" action="/signup/collectinfo" method="post">
+        <input type="email" id="email" name="email" placeholder="email" required><br>
+        <input type="password" id="password" name="password" placeholder="password" required><br>
+        <input type="password" id="re-enter-password" name="re-enter-password" placeholder="re-enter password" required><br>
+        <input type="submit" value="Sign In">
+    </form>
   </div>
 </body>
 </html>
